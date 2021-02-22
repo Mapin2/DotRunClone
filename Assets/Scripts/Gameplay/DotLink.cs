@@ -44,7 +44,7 @@ namespace DotRun.GamePlay
                 if (Input.GetTouch(0).phase == TouchPhase.Began)
                     hit = Physics2D.Raycast(touchPosition, Vector2.zero).transform;
 
-                if (hit && (hit.gameObject.layer == Constants.LAYER_INTERACTABLE_DOT || hit.gameObject.layer == Constants.LAYER_CHANGE_CURRENT_MATERIAL))
+                if (hit && hit.gameObject.layer == Constants.LAYER_INTERACTABLE_DOT)
                     hit.TryGetComponent(out touchedDot);
             }
         }
@@ -70,9 +70,9 @@ namespace DotRun.GamePlay
             if (touchedDot)
             {
                 // If it is the same material create first link with line renderer
-                if (touchedDot.dotMaterial == currentDot.dotMaterial || touchedDot.gameObject.layer == Constants.LAYER_CHANGE_CURRENT_MATERIAL)
+                if (touchedDot.dotMaterial == currentDot.dotMaterial || touchedDot.type == InteractableType.TRIANGLE)
                 {
-                    if (touchedDot.gameObject.layer == Constants.LAYER_CHANGE_CURRENT_MATERIAL)
+                    if (touchedDot.type == InteractableType.TRIANGLE)
                         mapGenerator.ApplyCurrentColorChange();
 
                     // Perform movement

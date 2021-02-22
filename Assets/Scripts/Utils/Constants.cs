@@ -23,7 +23,6 @@
         // Layers
         public const int LAYER_INTERACTABLE_DOT = 8;
         public const int LAYER_NOT_INTERACTABLE_DOT = 9;
-        public const int LAYER_CHANGE_CURRENT_MATERIAL = 10;
 
         // Paths
         public const string RESOURCES_MATERIALS_FOLDER = "Materials/";

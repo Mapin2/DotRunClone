@@ -13,6 +13,7 @@ namespace DotRun.GamePlay
         [SerializeField] private float maxInteractablePosition = -2f;
         [Tooltip("Points that the dot rewards for touching it correctly")]
         [SerializeField] private int points = 10;
+        public InteractableType  type = InteractableType.DOT;
 
         [Header("Materials Settings")]
         [Tooltip("Material of the current dot")]
@@ -54,8 +55,7 @@ namespace DotRun.GamePlay
         private void Update()
         {
             // Become interactable between  Y <= -1 and Y >= -2, and if its not a change current material dot
-            if (gameObject.layer != Constants.LAYER_CHANGE_CURRENT_MATERIAL)
-                gameObject.layer = (transform.position.y <= minInteractablePos && transform.position.y >= maxInteractablePosition) ? Constants.LAYER_INTERACTABLE_DOT : Constants.LAYER_NOT_INTERACTABLE_DOT;
+            gameObject.layer = (transform.position.y <= minInteractablePos && transform.position.y >= maxInteractablePosition) ? Constants.LAYER_INTERACTABLE_DOT : Constants.LAYER_NOT_INTERACTABLE_DOT;
 
             // If this dot has a LineRenderer update its start position to self position
             if (line)

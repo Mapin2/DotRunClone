@@ -10,6 +10,7 @@ namespace DotRun.GamePlay
         [SerializeField] private Material[] dotMaterials = null;
         [SerializeField] private int[] possibleXPositions = new int[] { -2, 0, 2 };
         [SerializeField] private GameObject dotPrefab = null;
+        [SerializeField] private GameObject trianglePrefab = null;
         [SerializeField] private Material currentMaterial = null;
 
         [SerializeField] private int maxYDotPosition = 2;
@@ -51,7 +52,7 @@ namespace DotRun.GamePlay
             }
             else
             {
-                // Generate new row of dots for changing the current material
+                // Generate new row for changing the current material
                 InstantiateRow(maxYDotPosition, true);
                 CalculateChangeCurrentMaterial();
             }
@@ -91,9 +92,9 @@ namespace DotRun.GamePlay
 
         private void InstantiateDot(Vector2 position, Material material, bool changeCurrentMaterial)
         {
-            GameObject instantiatedDot = Instantiate(dotPrefab, position, Quaternion.identity);
+            GameObject instantiatedDot = Instantiate(!changeCurrentMaterial ? dotPrefab : trianglePrefab, position, Quaternion.identity);
             instantiatedDot.GetComponent<SpriteRenderer>().material = material;
-            instantiatedDot.layer = !changeCurrentMaterial ? Constants.LAYER_NOT_INTERACTABLE_DOT : Constants.LAYER_CHANGE_CURRENT_MATERIAL;
+            instantiatedDot.layer = Constants.LAYER_NOT_INTERACTABLE_DOT;
         }
 
         private Material GetRandomMaterial()
