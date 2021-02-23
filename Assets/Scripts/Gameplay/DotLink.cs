@@ -1,5 +1,6 @@
 using UnityEngine;
 using DotRun.Utils;
+using DotRun.Core;
 
 namespace DotRun.GamePlay
 {
@@ -69,7 +70,7 @@ namespace DotRun.GamePlay
         {
             if (touchedDot)
             {
-                // If it is the same material create first link with line renderer
+                // If it is the same material or a change material type create first link with line renderer
                 if (touchedDot.dotMaterial == currentDot.dotMaterial || touchedDot.type == InteractableType.TRIANGLE)
                 {
                     if (touchedDot.type == InteractableType.TRIANGLE)
@@ -88,7 +89,7 @@ namespace DotRun.GamePlay
                 else
                 {
                     // If the color is not the same as our current
-                    // GameManager.Instance.Harm();
+                    GameManager.Instance.Hurt();
                 }
 
                 touchedDot = null;

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using DotRun.GamePlay;
 using DotRun.Core;
 
@@ -7,7 +8,8 @@ namespace DotRun
     public class CurrentMaterial : MonoBehaviour
     {
         [SerializeField] private MapGenerator mapGenerator = null;
-        [SerializeField] private SpriteRenderer ownRenderer = null;
+        private SpriteRenderer ownRenderer = null;
+        private Image image = null;
 
         private void Awake()
         {
@@ -21,6 +23,7 @@ namespace DotRun
         private void Start()
         {
             TryGetComponent(out ownRenderer);
+            TryGetComponent(out image);
             ApplyCurrentMaterial();
         }
 
@@ -28,6 +31,9 @@ namespace DotRun
         {
             if (ownRenderer)
                 ownRenderer.material = GameManager.Instance.currentMaterial;
+
+            if (image)
+                image.material = GameManager.Instance.currentMaterial;
         }
     }
 }

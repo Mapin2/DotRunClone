@@ -13,7 +13,7 @@ namespace DotRun.GamePlay
         [SerializeField] private float maxInteractablePosition = -2f;
         [Tooltip("Points that the dot rewards for touching it correctly")]
         [SerializeField] private int points = 10;
-        public InteractableType  type = InteractableType.DOT;
+        public InteractableType type = InteractableType.DOT;
 
         [Header("Materials Settings")]
         [Tooltip("Material of the current dot")]

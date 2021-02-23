@@ -10,8 +10,7 @@ namespace DotRun.Core
         public Material currentMaterial = null;
         [SerializeField] private Material lastCurrentMaterial = null;
         [SerializeField] private MapGenerator mapGenerator = null;
-
-        public int lifes = 3;
+        [SerializeField] private HeartManager heartManager = null;
 
         public override void Awake()
         {
@@ -28,6 +27,9 @@ namespace DotRun.Core
 
             if (!mapGenerator)
                 mapGenerator = FindObjectOfType<MapGenerator>();
+
+            if (!heartManager)
+                heartManager = FindObjectOfType<HeartManager>();
         }
 
         private void Start()
@@ -35,14 +37,16 @@ namespace DotRun.Core
             mapGenerator.GenerateMap();
         }
 
-        public void Harm()
+        public void Hurt()
         {
-            lifes--;
-            // score - 5 points
-            if (lifes <= 0)
-            {
+            heartManager.Hurt();
+            if (!heartManager.isAlive)
                 GameOver();
-            }
+        }
+
+        public void Heal()
+        {
+            heartManager.Heal();
         }
 
         private void GameOver()
