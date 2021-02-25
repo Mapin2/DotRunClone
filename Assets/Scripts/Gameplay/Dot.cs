@@ -12,7 +12,9 @@ namespace DotRun.GamePlay
         [Tooltip("The max Y position in which the dot will stop being interactable")]
         [SerializeField] private float maxInteractablePosition = -2f;
         [Tooltip("Points that the dot rewards for touching it correctly")]
-        [SerializeField] private int points = 10;
+        public int points = 10;
+        [Tooltip("The amount of time that the dot will gain")]
+        public float dotTimeGain = 0.5f; 
         public InteractableType type = InteractableType.DOT;
 
         [Header("Materials Settings")]

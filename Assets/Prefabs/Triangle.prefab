@@ -98,6 +98,7 @@ MonoBehaviour:
   minInteractablePos: -1
   maxInteractablePosition: -2
   points: 10
+  dotTimeGain: 0.5
   type: 1
   dotMaterial: {fileID: 0}
   line: {fileID: 0}

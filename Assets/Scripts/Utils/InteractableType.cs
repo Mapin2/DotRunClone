@@ -1,9 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public enum InteractableType
+﻿namespace DotRun.Utils
 {
-    DOT,
-    TRIANGLE
+    public enum InteractableType
+    {
+        DOT,
+        TRIANGLE
+    }
 }

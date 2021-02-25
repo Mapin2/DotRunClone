@@ -5,7 +5,7 @@ The original game: https://dotrun.voxelstudios.it/
 
 How the clone is going: 
 
-![Alt Text](https://media.giphy.com/media/yXLPxODKYaIqvzk6zz/giphy.gif)
+![Alt Text](https://media.giphy.com/media/y6epShVMPVeg71hRko/giphy.gif)
 
 ### If you want to download this project and make it work you'll need the next paid assets I didn't include on the sources:
 

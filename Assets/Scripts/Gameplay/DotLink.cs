@@ -57,12 +57,11 @@ namespace DotRun.GamePlay
                 currentDot = touchedDot;
                 touchedDot = null;
 
-                // Perform movement
-                mapGenerator.ScrollMap();
+                DotActions(currentDot);
 
                 CreateLink(currentDot);
 
-                // TODO: GameManager.Start para dar inicio al futuro contador 
+                GameManager.Instance.StartGame(); 
             }
         }
 
@@ -75,9 +74,8 @@ namespace DotRun.GamePlay
                 {
                     if (touchedDot.type == InteractableType.TRIANGLE)
                         mapGenerator.ApplyCurrentColorChange();
-
-                    // Perform movement
-                    mapGenerator.ScrollMap();
+                    
+                    DotActions(touchedDot);
 
                     // Create link between current and touched
                     currentDot.linkedWith = touchedDot;
@@ -94,6 +92,15 @@ namespace DotRun.GamePlay
 
                 touchedDot = null;
             }
+        }
+
+        private void DotActions(Dot dot)
+        {
+            // Perform movement
+            mapGenerator.ScrollMap();
+
+            // Add score and gain time
+            GameManager.Instance.ScorePoints(dot.points, dot.dotTimeGain);
         }
 
         private void CreateLink(Dot currentDot)

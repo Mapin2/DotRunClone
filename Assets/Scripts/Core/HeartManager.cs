@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 using DotRun.UI;
-using System;
 
-namespace DotRun
+namespace DotRun.Core
 {
     public class HeartManager : MonoBehaviour
     {

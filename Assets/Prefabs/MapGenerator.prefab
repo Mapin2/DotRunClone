@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1930671766100487413
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1930671766100487415}
+  - component: {fileID: 1930671766100487412}
+  m_Layer: 0
+  m_Name: MapGenerator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1930671766100487415
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1930671766100487413}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1930671766100487412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1930671766100487413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 202fce1783a9e7d4eb82a0ad0ef16e14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dotMaterials:
+  - {fileID: 2100000, guid: ec5ca80e8d4c0694c9a9cb33aacd80e6, type: 2}
+  - {fileID: 2100000, guid: 199a157572933d947acda40c76c1c756, type: 2}
+  - {fileID: 2100000, guid: 91d2b9e474a1ceb4caa7bfcebdc4340b, type: 2}
+  possibleXPositions: feffffff0000000002000000
+  dotPrefab: {fileID: 7920965406375155552, guid: f8227eb00ab691e4d865191d94614f61,
+    type: 3}
+  trianglePrefab: {fileID: 7317173417127790842, guid: 883e82483e506e44ea25368bfa7534d0,
+    type: 3}
+  currentMaterial: {fileID: 0}
+  maxYDotPosition: 2
+  minYDotPosition: -2
+  maxXDotPosition: 2
+  minXDotPosition: -2
+  numberOfDotsToChangeCurrentMaterial: 0
+  minDotsToChangeCurrentMaterial: 5
+  maxDotsToChangeCurrentMaterial: 30
