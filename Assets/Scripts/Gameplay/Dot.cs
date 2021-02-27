@@ -15,7 +15,7 @@ namespace DotRun.GamePlay
         public int points = 10;
         [Tooltip("The amount of time that the dot will gain")]
         public float dotTimeGain = 0.5f; 
-        public InteractableType type = InteractableType.DOT;
+        public InteractableType type = InteractableType.Dot;
 
         [Header("Materials Settings")]
         [Tooltip("Material of the current dot")]
@@ -26,6 +26,10 @@ namespace DotRun.GamePlay
         public LineRenderer line = null;
         [Tooltip("Dot to which is linked the current dot line renderer")]
         public Dot linkedWith = null;
+        
+        [Header("VFX Settings")]
+        [Tooltip("Child ring vfx")]
+        public ParticleSystem ringVFX = null;
 
         [Header("Movement Settings")]
         [Tooltip("Duration of the dot down movement")]
@@ -37,7 +41,17 @@ namespace DotRun.GamePlay
         [Tooltip("Y position in which the dot will destroy itself")]
         [SerializeField] private float yPosLimit = -7f;
 
+        [Header("Sounds")]
+        [SerializeField] private AudioSource source = null;
+        [SerializeField] private AudioClip normalSound = null;
+        [SerializeField] private AudioClip changeColorSound = null;
+        [SerializeField] private AudioClip wrongColorSound = null;
+        [SerializeField] private AudioClip powerUpSound = null;
+        
         private MapGenerator mapGenerator = null;
+
+        // Static info to save last dot material touched (used on the game over)
+        public static Material latestTouchedDotMaterial = null;
 
         private void Awake()
         {
@@ -80,6 +94,26 @@ namespace DotRun.GamePlay
                 mapGenerator.OnDotTouched -= DotMove;
                 Destroy(gameObject);
             }
+        }
+
+        public void PlaySound(SoundType type)
+        {
+            switch (type)
+            {
+                case SoundType.Normal:
+                    source.clip = normalSound;
+                    break;
+                case SoundType.ChangeColor:
+                    source.clip = changeColorSound;
+                    break;
+                case SoundType.Hurt:
+                    source.clip = wrongColorSound;
+                    break;
+                case SoundType.Heal:
+                    source.clip = powerUpSound;
+                    break;
+            }
+            source.Play();
         }
 
         public void DotMove()

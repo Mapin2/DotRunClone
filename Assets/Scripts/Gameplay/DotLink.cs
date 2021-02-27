@@ -54,14 +54,23 @@ namespace DotRun.GamePlay
         {
             if (!currentDot && touchedDot)
             {
-                currentDot = touchedDot;
-                touchedDot = null;
+                // If it is the same material or a change material type create first link with line renderer
+                if (touchedDot.dotMaterial == GameManager.Instance.currentMaterial)
+                {
+                    currentDot = touchedDot;
+                    touchedDot = null;
 
-                DotActions(currentDot);
+                    DotActions(currentDot);
 
-                CreateLink(currentDot);
+                    CreateLink(currentDot);
+                
+                    GameManager.Instance.StartGame();
+                }
+                else
+                {
+                    DotTouchedError();
+                }
 
-                GameManager.Instance.StartGame(); 
             }
         }
 
@@ -70,11 +79,11 @@ namespace DotRun.GamePlay
             if (touchedDot)
             {
                 // If it is the same material or a change material type create first link with line renderer
-                if (touchedDot.dotMaterial == currentDot.dotMaterial || touchedDot.type == InteractableType.TRIANGLE)
+                if (touchedDot.dotMaterial == currentDot.dotMaterial || touchedDot.type == InteractableType.Triangle)
                 {
-                    if (touchedDot.type == InteractableType.TRIANGLE)
+                    if (touchedDot.type == InteractableType.Triangle)
                         mapGenerator.ApplyCurrentColorChange();
-                    
+
                     DotActions(touchedDot);
 
                     // Create link between current and touched
@@ -86,8 +95,7 @@ namespace DotRun.GamePlay
                 }
                 else
                 {
-                    // If the color is not the same as our current
-                    GameManager.Instance.Hurt();
+                    DotTouchedError();
                 }
 
                 touchedDot = null;
@@ -96,6 +104,26 @@ namespace DotRun.GamePlay
 
         private void DotActions(Dot dot)
         {
+            // SFX
+            switch (dot.type)
+            {
+                case InteractableType.Dot:
+                    dot.PlaySound(SoundType.Normal);
+                    break;
+                case InteractableType.Triangle:
+                    dot.PlaySound(SoundType.ChangeColor);
+                    break;
+                case InteractableType.PowerUp:
+                    dot.PlaySound(SoundType.ChangeColor);
+                    break;
+            }
+
+            // VFX
+            ActivateDotVFX(dot);
+
+            // Save static info about the touched dot
+            Dot.latestTouchedDotMaterial = dot.dotMaterial;
+
             // Perform movement
             mapGenerator.ScrollMap();
 
@@ -103,15 +131,42 @@ namespace DotRun.GamePlay
             GameManager.Instance.ScorePoints(dot.points, dot.dotTimeGain);
         }
 
+        private void DotTouchedError()
+        {
+            // SFX
+            touchedDot.PlaySound(SoundType.Hurt);
+
+            ActivateDotVFX(touchedDot);
+
+            // Save static info about the touched dot
+            Dot.latestTouchedDotMaterial = touchedDot.dotMaterial;
+            touchedDot = null;
+
+            GameManager.Instance.Hurt();
+        }
+
+        private static void ActivateDotVFX(Dot dot)
+        {
+            // Activate VFX
+            ParticleSystem ringVFX = dot.ringVFX;
+            ParticleSystem.MainModule ringVFXMainModule = ringVFX.main;
+            ringVFXMainModule.startColor = dot.dotMaterial.color;
+            ringVFX.gameObject.SetActive(true);
+        }
+
         private void CreateLink(Dot currentDot)
         {
-            // Add a LineRenderer component to the current dot
-            LineRenderer line = currentDot.gameObject.AddComponent(typeof(LineRenderer)) as LineRenderer;
+            LineRenderer line = null;
+            if (!currentDot.TryGetComponent(out line))
+                // Add a LineRenderer component to the current dot
+                line = currentDot.gameObject.AddComponent<LineRenderer>();
+
             // Configure it
             line.material = currentDot.dotMaterial;
             line.startWidth = lineThickness;
             line.endWidth = lineThickness;
             line.generateLightingData = true;
+
             // Set its reference in the dot
             currentDot.line = line;
         }

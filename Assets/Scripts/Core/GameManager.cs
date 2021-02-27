@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using DotRun.Utils;
 using DotRun.GamePlay;
-using System;
+using TMPro;
 
 namespace DotRun.Core
 {
@@ -11,6 +11,7 @@ namespace DotRun.Core
         public Material currentMaterial = null;
         [SerializeField] private Material lastCurrentMaterial = null;
         public int maxScore = 0;
+        [SerializeField] TextMeshProUGUI maxScoreUI = null;
 
         // Managers
         [SerializeField] private MapGenerator mapGenerator = null;
@@ -27,7 +28,9 @@ namespace DotRun.Core
             lastCurrentMaterial = Resources.Load(Constants.RESOURCES_MATERIALS_FOLDER + currenMaterialName, typeof(Material)) as Material;
 
             // Load max score saved on playerprefs if exist
-            maxScore = PlayerPrefs.GetInt(Constants.PLAYERPREF_CURRENT_MATERIAL, 0);
+            maxScore = PlayerPrefs.GetInt(Constants.PLAYERPREF_MAX_CURRENT_SCORE, 0);
+            if (maxScoreUI)
+                maxScoreUI.text = maxScore.ToString();
 
             // The current color will be used for some UI and generation of the map based on this material
             currentMaterial = lastCurrentMaterial;
@@ -81,7 +84,16 @@ namespace DotRun.Core
 
         private void GameOver()
         {
-            throw new NotImplementedException();
+            scoreManager.timeRunning = false;
+            currentMaterial = Dot.latestTouchedDotMaterial;
+            PlayerPrefs.SetString(Constants.PLAYERPREF_CURRENT_MATERIAL, currentMaterial.name);
+            if (scoreManager.score > maxScore)
+            {
+                maxScore = scoreManager.score;
+                PlayerPrefs.SetInt(Constants.PLAYERPREF_MAX_CURRENT_SCORE, maxScore);
+            }
+
+            SceneLoaderManager.Instance.FadeToLevel(Constants.SCENE_INDEX_MAIN_MENU);
         }
 
         private void OnDisable()

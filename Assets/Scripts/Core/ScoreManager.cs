@@ -20,11 +20,14 @@ namespace DotRun.Core
         [Tooltip("Number of dots that the player has tapped correctly")]
         [SerializeField] private int totalDotsScored = 0;
 
-        [SerializeField] private int score = 0;
+        public int score = 0;
         [SerializeField] private int displayScore = 0;
 
         [SerializeField] private Timer timerUI = null;
         [SerializeField] private TextMeshProUGUI scoreUI;
+
+        [SerializeField] private AudioSource source = null;
+        [SerializeField] private AudioClip hurtSound = null;
 
         public bool timeRunning = false;
 
@@ -45,6 +48,7 @@ namespace DotRun.Core
                 timer += Time.deltaTime;
                 if (timer >= maxDotTime)
                 {
+                    source.PlayOneShot(hurtSound);
                     GameManager.Instance.Hurt();
                     timerUI.ResetImageFill();
                     timer = 0;

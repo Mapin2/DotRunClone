@@ -2,7 +2,8 @@
 {
     public enum InteractableType
     {
-        DOT,
-        TRIANGLE
+        Dot,
+        Triangle,
+        PowerUp
     }
 }

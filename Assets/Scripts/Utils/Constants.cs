@@ -6,7 +6,7 @@ namespace DotRun.Utils
     {
         // Playerprefs
         public const string PLAYERPREF_CURRENT_MATERIAL = "CurrentMaterial";
-        public const string PLAYERPREF_CURRENT_SCORE = "CurrentScore";
+        public const string PLAYERPREF_MAX_CURRENT_SCORE = "CurrentScore";
 
         // Scene index
         public const int SCENE_INDEX_LOGO = 0;

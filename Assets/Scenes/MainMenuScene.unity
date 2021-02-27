@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 720163509}
   - component: {fileID: 720163511}
   m_Layer: 5
-  m_Name: CurrentScoreText
+  m_Name: CurrentMaxScoreText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -178,7 +178,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 3395
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 28472c5fc7423fc44b3a7df166f61626, type: 2}
   m_sharedMaterial: {fileID: -2005059156313581040, guid: 28472c5fc7423fc44b3a7df166f61626,
@@ -341,6 +341,11 @@ PrefabInstance:
       propertyPath: dontDestroy
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9165319714969155771, guid: 4469505ff96124947b145474a0afddea,
+        type: 3}
+      propertyPath: maxScoreUI
+      value: 
+      objectReference: {fileID: 720163509}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4469505ff96124947b145474a0afddea, type: 3}
 --- !u!1 &1217960970
