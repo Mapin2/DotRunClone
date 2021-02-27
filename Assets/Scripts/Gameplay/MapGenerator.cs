@@ -8,15 +8,16 @@ namespace DotRun.GamePlay
     public class MapGenerator : MonoBehaviour
     {
         [SerializeField] private Material[] dotMaterials = null;
-        [SerializeField] private int[] possibleXPositions = new int[] { -2, 0, 2 };
+        [SerializeField] private float[] possibleXPositions = new float[] { -1.5f, 0, 1.5f };
         [SerializeField] private GameObject dotPrefab = null;
         [SerializeField] private GameObject trianglePrefab = null;
         [SerializeField] private Material currentMaterial = null;
 
-        [SerializeField] private int maxYDotPosition = 2;
-        [SerializeField] private int minYDotPosition = -2;
-        [SerializeField] private int maxXDotPosition = 2;
-        [SerializeField] private int minXDotPosition = -2;
+        [SerializeField] private float maxYDotPosition = 2;
+        [SerializeField] private float minYDotPosition = -2.5f;
+        [SerializeField] private float maxXDotPosition = 1.5f;
+        [SerializeField] private float minXDotPosition = -1.5f;
+        [SerializeField] private float displacement = -1.5f;
 
         [SerializeField] private int numberOfDotsToChangeCurrentMaterial = 0;
         [SerializeField] private int minDotsToChangeCurrentMaterial = 5;
@@ -33,7 +34,7 @@ namespace DotRun.GamePlay
 
         public void GenerateMap()
         {
-            for (int yPos = maxYDotPosition; yPos >= minYDotPosition; yPos -= 2)
+            for (float yPos = maxYDotPosition; yPos >= minYDotPosition; yPos -= displacement)
                 InstantiateRow(yPos, false);
 
             CalculateChangeCurrentMaterial();
@@ -59,16 +60,19 @@ namespace DotRun.GamePlay
 
         }
 
-        private void InstantiateRow(int yPos, bool changeCurrentMaterial)
+        private void InstantiateRow(float yPos, bool changeCurrentMaterial)
         {
             if (!changeCurrentMaterial)
             {
                 // Calculate which X position will have the mandatory currentMaterial dot
-                int currentMaterialDotX = possibleXPositions[UnityEngine.Random.Range(0, possibleXPositions.Length)];
-                for (int xPos = minXDotPosition; xPos <= maxXDotPosition; xPos += 2)
+                float currentMaterialDotX = possibleXPositions[UnityEngine.Random.Range(0, possibleXPositions.Length)];
+                for (float xPos = minXDotPosition; xPos <= maxXDotPosition; xPos += displacement)
                 {
-                    Material material = xPos == currentMaterialDotX ? currentMaterial : GetRandomMaterial();
-                    InstantiateDot(new Vector2(xPos, yPos), material, changeCurrentMaterial);
+                    bool isCurrent = xPos == currentMaterialDotX ? true : false;
+                    Material material = isCurrent ? currentMaterial : GetRandomMaterial();
+                    GameObject instantiatedDot = InstantiateDot(new Vector2(xPos, yPos), material, changeCurrentMaterial);
+                    if (isCurrent && PowerUpManager.Instance.canSpawnPowerUp && !PowerUpManager.Instance.powerUpSpawned)
+                        PowerUpManager.Instance.ActivatePowerUp(instantiatedDot);
                 }
             }
             else
@@ -82,7 +86,7 @@ namespace DotRun.GamePlay
                 currentMaterial = material;
                 GameManager.Instance.currentMaterial = currentMaterial;
                
-                for (int xPos = minXDotPosition; xPos <= maxXDotPosition; xPos += 2)
+                for (float xPos = minXDotPosition; xPos <= maxXDotPosition; xPos += displacement)
                 {
                     InstantiateDot(new Vector2(xPos, yPos), material, changeCurrentMaterial);
                 }
@@ -90,11 +94,12 @@ namespace DotRun.GamePlay
 
         }
 
-        private void InstantiateDot(Vector2 position, Material material, bool changeCurrentMaterial)
+        private GameObject InstantiateDot(Vector2 position, Material material, bool changeCurrentMaterial)
         {
             GameObject instantiatedDot = Instantiate(!changeCurrentMaterial ? dotPrefab : trianglePrefab, position, Quaternion.identity);
             instantiatedDot.GetComponent<SpriteRenderer>().material = material;
             instantiatedDot.layer = Constants.LAYER_NOT_INTERACTABLE_DOT;
+            return instantiatedDot;
         }
 
         private Material GetRandomMaterial()

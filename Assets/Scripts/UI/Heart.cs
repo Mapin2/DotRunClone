@@ -11,9 +11,6 @@ namespace DotRun.UI
         {
             if (!animatedIconHandler)
                 animatedIconHandler = GetComponent<AnimatedIconHandler>();
-
-            // To let the hearts filled at the start
-            animatedIconHandler.ClickEvent();
         }
     }
 }

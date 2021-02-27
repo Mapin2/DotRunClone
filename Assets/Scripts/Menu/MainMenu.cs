@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using DotRun.Core;
 using DotRun.Utils;
+using DotRun.Core;
 
 
 namespace DotRun.Menu
@@ -10,7 +10,7 @@ namespace DotRun.Menu
     {
         public void Play()
         {
-            SceneLoaderManager.Instance.FadeToLevel(Constants.SCENE_INDEX_GAME);
+            StartCoroutine(SceneLoaderManager.Instance.ChangeLevel(Constants.SCENE_INDEX_GAME));
         }
     }
 }

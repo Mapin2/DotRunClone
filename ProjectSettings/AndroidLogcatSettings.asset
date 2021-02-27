@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "94HAY0P9KW",
         "name": "com.mariopinto.TerceraEntregaDotRun",
-        "processId": 23708,
+        "processId": 18029,
         "exited": true
     },
     "m_SelectedPriority": 0,
@@ -54,6 +54,18 @@
             "deviceId": "94HAY0P9KW",
             "name": "com.mariopinto.TerceraEntregaDotRun",
             "processId": 23708,
+            "exited": true
+        },
+        {
+            "deviceId": "94HAY0P9KW",
+            "name": "com.mariopinto.TerceraEntregaDotRun",
+            "processId": 14903,
+            "exited": false
+        },
+        {
+            "deviceId": "94HAY0P9KW",
+            "name": "com.mariopinto.TerceraEntregaDotRun",
+            "processId": 18029,
             "exited": true
         }
     ],

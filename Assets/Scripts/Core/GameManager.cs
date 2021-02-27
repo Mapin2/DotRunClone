@@ -9,14 +9,14 @@ namespace DotRun.Core
     public class GameManager : Singleton<GameManager>
     {
         public Material currentMaterial = null;
-        [SerializeField] private Material lastCurrentMaterial = null;
+        private Material lastCurrentMaterial = null;
         public int maxScore = 0;
-        [SerializeField] TextMeshProUGUI maxScoreUI = null;
+        public bool gameIsRunning = false;
+
+        [SerializeField] private TextMeshProUGUI maxScoreUI = null;
 
         // Managers
         [SerializeField] private MapGenerator mapGenerator = null;
-        [SerializeField] private HeartManager heartManager = null;
-        [SerializeField] private ScoreManager scoreManager = null;
 
         public override void Awake()
         {
@@ -50,50 +50,44 @@ namespace DotRun.Core
                 if (!mapGenerator)
                     mapGenerator = FindObjectOfType<MapGenerator>();
 
-                if (!heartManager)
-                    heartManager = FindObjectOfType<HeartManager>();
-
-                if (!scoreManager)
-                    scoreManager = FindObjectOfType<ScoreManager>();
-
                 mapGenerator.GenerateMap();
             }
         }
 
         public void StartGame()
         {
-            scoreManager.timeRunning = true;
+            gameIsRunning = true;
         }
 
         public void Hurt()
         {
-            heartManager.Hurt();
-            if (!heartManager.isAlive)
+            HeartManager.Instance.Hurt();
+            if (!HeartManager.Instance.isAlive)
                 GameOver();
         }
 
         public void Heal()
         {
-            heartManager.Heal();
+            HeartManager.Instance.Heal();
         }
 
         public void ScorePoints(int points, float timeGain)
         {
-            scoreManager.ScorePoints(points, timeGain);
+            ScoreManager.Instance.ScorePoints(points, timeGain);
         }
 
         private void GameOver()
         {
-            scoreManager.timeRunning = false;
+            gameIsRunning = false;
             currentMaterial = Dot.latestTouchedDotMaterial;
             PlayerPrefs.SetString(Constants.PLAYERPREF_CURRENT_MATERIAL, currentMaterial.name);
-            if (scoreManager.score > maxScore)
+            if (ScoreManager.Instance.score > maxScore)
             {
-                maxScore = scoreManager.score;
+                maxScore = ScoreManager.Instance.score;
                 PlayerPrefs.SetInt(Constants.PLAYERPREF_MAX_CURRENT_SCORE, maxScore);
             }
 
-            SceneLoaderManager.Instance.FadeToLevel(Constants.SCENE_INDEX_MAIN_MENU);
+            StartCoroutine(SceneLoaderManager.Instance.ChangeLevel(Constants.SCENE_INDEX_MAIN_MENU));
         }
 
         private void OnDisable()

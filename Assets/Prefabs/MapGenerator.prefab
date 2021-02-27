@@ -47,16 +47,20 @@ MonoBehaviour:
   - {fileID: 2100000, guid: ec5ca80e8d4c0694c9a9cb33aacd80e6, type: 2}
   - {fileID: 2100000, guid: 199a157572933d947acda40c76c1c756, type: 2}
   - {fileID: 2100000, guid: 91d2b9e474a1ceb4caa7bfcebdc4340b, type: 2}
-  possibleXPositions: feffffff0000000002000000
+  possibleXPositions:
+  - -2
+  - 0
+  - 2
   dotPrefab: {fileID: 7920965406375155552, guid: f8227eb00ab691e4d865191d94614f61,
     type: 3}
   trianglePrefab: {fileID: 7317173417127790842, guid: 883e82483e506e44ea25368bfa7534d0,
     type: 3}
   currentMaterial: {fileID: 0}
   maxYDotPosition: 2
-  minYDotPosition: -2
-  maxXDotPosition: 2
-  minXDotPosition: -2
+  minYDotPosition: -2.5
+  maxXDotPosition: 1.5
+  minXDotPosition: -1.15
+  displacement: 1.5
   numberOfDotsToChangeCurrentMaterial: 0
   minDotsToChangeCurrentMaterial: 5
   maxDotsToChangeCurrentMaterial: 30

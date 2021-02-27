@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 517830257824633101}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
   m_Children: []
   m_Father: {fileID: 7317173417127790846}
   m_RootOrder: 0
@@ -4767,7 +4767,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61f55e68e182f754b926fd5607324b06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scaleTo: {x: 2, y: 2, z: 0}
+  scaleTo: {x: 1.5, y: 1.5, z: 0}
   duration: 0.3
 --- !u!1 &7317173417127790842
 GameObject:
@@ -4798,7 +4798,7 @@ Transform:
   m_GameObject: {fileID: 7317173417127790842}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2, y: -0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.45, y: 0.45, z: 0.45}
   m_Children:
   - {fileID: 3092051167869805448}
   m_Father: {fileID: 0}
@@ -4866,8 +4866,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a011547f623e61546af7531bb3c5db27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minInteractablePos: -1
-  maxInteractablePosition: -2
+  minInteractablePos: -1.5
+  maxInteractablePosition: -2.5
   points: 10
   dotTimeGain: 0.5
   type: 1
@@ -4876,8 +4876,7 @@ MonoBehaviour:
   linkedWith: {fileID: 0}
   ringVFX: {fileID: 6556173282702870774}
   movementDuration: 1
-  unitsToMove: 2
-  unitsToMoveVariation: 1.5
+  unitsToMove: 1.5
   yPosLimit: -7
   source: {fileID: 5606448040190214473}
   normalSound: {fileID: 8300000, guid: 54f30f6c808b8644fa706724cd97b11c, type: 3}
@@ -4899,7 +4898,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 1.5
+  m_Radius: 2
 --- !u!82 &5606448040190214473
 AudioSource:
   m_ObjectHideFlags: 0

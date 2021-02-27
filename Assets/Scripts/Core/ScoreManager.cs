@@ -1,16 +1,17 @@
 using System.Collections;
 using UnityEngine;
 using TMPro;
+using DotRun.Utils;
 using DotRun.UI;
 
 namespace DotRun.Core
 {
-    public class ScoreManager : MonoBehaviour
+    public class ScoreManager : Singleton<ScoreManager>
     {
         // This default configuration makes 6 scales of difficulty and goes from 2.5 second to 1 second of maxDotTime
+        [Header("Configuration")]
         [Tooltip("Maximum time the player will have to tap the next dot")]
         [SerializeField] private float maxDotTime = 2.5f;
-        [SerializeField] private float timer = 0;
         [Tooltip("Amount of time to subtract in the maximum time to tap a dot and increase difficulty")]
         [SerializeField] private float decreaseMaxDotTime = 0.25f;
         [Tooltip("Number of dots taped to reach the maximum difficulty")]
@@ -20,26 +21,29 @@ namespace DotRun.Core
         [Tooltip("Number of dots that the player has tapped correctly")]
         [SerializeField] private int totalDotsScored = 0;
 
-        public int score = 0;
-        [SerializeField] private int displayScore = 0;
+        private float timer = 0;
+        [HideInInspector] public int score = 0;
+        private int displayScore = 0;
+        [HideInInspector] public int scoreMultiplier = 1;
 
+        [Header("References")]
         [SerializeField] private Timer timerUI = null;
         [SerializeField] private TextMeshProUGUI scoreUI;
 
         [SerializeField] private AudioSource source = null;
         [SerializeField] private AudioClip hurtSound = null;
 
-        public bool timeRunning = false;
-
-        private void Awake()
+        public override void Awake()
         {
+            base.Awake();
+
             if (!timerUI)
                 timerUI = FindObjectOfType<Timer>();
         }
 
         private void Update()
         {
-            if (timeRunning)
+            if (GameManager.Instance.gameIsRunning)
             {
                 // Difficulty increases every time we meet the condition till we reach the maximum
                 if (totalDotsScored <= maxDotsDifficulty && totalDotsScored > 0 && totalDotsScored % dotsDifficultyStep == 0)
@@ -60,7 +64,7 @@ namespace DotRun.Core
 
         public void ScorePoints(int points, float timeGain)
         {
-            score += points;
+            score += points * scoreMultiplier;
             timer -= timeGain;
             if (timer < 0)
                 timer = 0;

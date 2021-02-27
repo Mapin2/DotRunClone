@@ -24,6 +24,8 @@ namespace DotRun.Utils
 
         // Tags
         public const string TAG_DOT = "Dot";
+        public const string TAG_HEART = "Heart";
+        public const string TAG_POWERUP_INDICATOR = "PowerUpIndicator";
 
         // Layers
         public const int LAYER_INTERACTABLE_DOT = 8;
@@ -34,5 +36,9 @@ namespace DotRun.Utils
 
         // Others
         public const string DEFAULT_CURRENT_MATERIAL = "Red";
+
+        // Object Names
+        public const string OBJECT_NAME_X2 = "X2";
+        public const string OBJECT_NAME_X3 = "X3";
     }
 }

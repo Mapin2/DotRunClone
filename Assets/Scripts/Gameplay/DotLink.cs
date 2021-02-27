@@ -1,6 +1,7 @@
 using UnityEngine;
 using DotRun.Utils;
 using DotRun.Core;
+using System;
 
 namespace DotRun.GamePlay
 {
@@ -76,7 +77,7 @@ namespace DotRun.GamePlay
 
         private void LinkDots()
         {
-            if (touchedDot)
+            if (touchedDot && GameManager.Instance.gameIsRunning)
             {
                 // If it is the same material or a change material type create first link with line renderer
                 if (touchedDot.dotMaterial == currentDot.dotMaterial || touchedDot.type == InteractableType.Triangle)
@@ -121,6 +122,10 @@ namespace DotRun.GamePlay
             // VFX
             ActivateDotVFX(dot);
 
+            // Activate power ups
+            if (dot.type == InteractableType.PowerUp)
+                TriggerPowerUp(dot);
+
             // Save static info about the touched dot
             Dot.latestTouchedDotMaterial = dot.dotMaterial;
 
@@ -129,6 +134,12 @@ namespace DotRun.GamePlay
 
             // Add score and gain time
             GameManager.Instance.ScorePoints(dot.points, dot.dotTimeGain);
+        }
+
+        private void TriggerPowerUp(Dot dot)
+        {
+            PowerUp powerUp = dot.GetComponentInChildren<PowerUp>();
+            powerUp.Trigger();
         }
 
         private void DotTouchedError()

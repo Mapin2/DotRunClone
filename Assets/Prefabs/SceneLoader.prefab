@@ -138,7 +138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac537333eb9c5404a915a22b28bf59c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroy: 1
+  dontDestroy: 0
   fadeAnimator: {fileID: 1348827657930483587}
 --- !u!1 &1348827658090525050
 GameObject:

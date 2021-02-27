@@ -1,20 +1,17 @@
 using UnityEngine;
 using DotRun.Utils;
+using DotRun.Core;
 using DG.Tweening;
 
 namespace DotRun.GamePlay
 {
     public class Dot : MonoBehaviour
     {
-        [Header("Interaction Settings")]
-        [Tooltip("The min Y position in which the dot will become interactable")]
-        [SerializeField] private float minInteractablePos = -1f;
-        [Tooltip("The max Y position in which the dot will stop being interactable")]
-        [SerializeField] private float maxInteractablePosition = -2f;
-        [Tooltip("Points that the dot rewards for touching it correctly")]
-        public int points = 10;
-        [Tooltip("The amount of time that the dot will gain")]
-        public float dotTimeGain = 0.5f; 
+        // Interaction Settings
+        private float minInteractablePos = -1.5f; // The min Y position in which the dot will become interactable
+        private float maxInteractablePosition = -2.5f; // The max Y position in which the dot will stop being interactable
+        public int points = 10; // Points that the dot rewards for touching it correctly
+        public float dotTimeGain = 0.5f; // The amount of time that the dot will gain
         public InteractableType type = InteractableType.Dot;
 
         [Header("Materials Settings")]
@@ -31,15 +28,10 @@ namespace DotRun.GamePlay
         [Tooltip("Child ring vfx")]
         public ParticleSystem ringVFX = null;
 
-        [Header("Movement Settings")]
-        [Tooltip("Duration of the dot down movement")]
-        [SerializeField] private float movementDuration = 1f;
-        [Tooltip("Number of units the dot will move down")]
-        [SerializeField] private float unitsToMove = 2f;
-        [Tooltip("Number of units the dot will move down when the Y position goes further than the interactable position")]
-        [SerializeField] private float unitsToMoveVariation = 1.5f;
-        [Tooltip("Y position in which the dot will destroy itself")]
-        [SerializeField] private float yPosLimit = -7f;
+        // Movement Settings
+        private float movementDuration = 1f; // Duration of the dot down movement
+        private float unitsToMove = 1.5f; // Number of units the dot will move down
+        private float yPosLimit = -7f; // Y position in which the dot will destroy itself
 
         [Header("Sounds")]
         [SerializeField] private AudioSource source = null;
@@ -47,6 +39,9 @@ namespace DotRun.GamePlay
         [SerializeField] private AudioClip changeColorSound = null;
         [SerializeField] private AudioClip wrongColorSound = null;
         [SerializeField] private AudioClip powerUpSound = null;
+
+        [Header("PowerUps")]
+        public PowerUp[] powerUps = null;
         
         private MapGenerator mapGenerator = null;
 
@@ -92,6 +87,9 @@ namespace DotRun.GamePlay
             {
                 // Movement event unsubscription
                 mapGenerator.OnDotTouched -= DotMove;
+                // Lost powerUp
+                if (type.Equals(InteractableType.PowerUp))
+                    PowerUpManager.Instance.powerUpSpawned = false;
                 Destroy(gameObject);
             }
         }
@@ -118,10 +116,7 @@ namespace DotRun.GamePlay
 
         public void DotMove()
         {
-            // Movement variation based on the dot y position
-            float movement = transform.position.y;
-            movement = movement <= minInteractablePos ? movement -= unitsToMoveVariation : movement -= unitsToMove;
-
+            float movement = transform.position.y - unitsToMove;
             transform.DOMoveY(movement, movementDuration).SetEase(Ease.OutQuint);
         }
     }
