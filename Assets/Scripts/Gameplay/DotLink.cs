@@ -106,18 +106,7 @@ namespace DotRun.GamePlay
         private void DotActions(Dot dot)
         {
             // SFX
-            switch (dot.type)
-            {
-                case InteractableType.Dot:
-                    dot.PlaySound(SoundType.Normal);
-                    break;
-                case InteractableType.Triangle:
-                    dot.PlaySound(SoundType.ChangeColor);
-                    break;
-                case InteractableType.PowerUp:
-                    dot.PlaySound(SoundType.ChangeColor);
-                    break;
-            }
+            AudioManager.Instance.ChooseAudio(dot.type);
 
             // VFX
             ActivateDotVFX(dot);
@@ -145,7 +134,7 @@ namespace DotRun.GamePlay
         private void DotTouchedError()
         {
             // SFX
-            touchedDot.PlaySound(SoundType.Hurt);
+            AudioManager.Instance.PlaySound(SoundType.Hurt);
 
             ActivateDotVFX(touchedDot);
 
@@ -167,8 +156,7 @@ namespace DotRun.GamePlay
 
         private void CreateLink(Dot currentDot)
         {
-            LineRenderer line = null;
-            if (!currentDot.TryGetComponent(out line))
+            if (!currentDot.TryGetComponent(out LineRenderer line))
                 // Add a LineRenderer component to the current dot
                 line = currentDot.gameObject.AddComponent<LineRenderer>();
 

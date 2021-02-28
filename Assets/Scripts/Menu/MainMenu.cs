@@ -1,16 +1,22 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using DotRun.Utils;
 using DotRun.Core;
-
 
 namespace DotRun.Menu
 {
     public class MainMenu : MonoBehaviour
     {
+        public Button intertitialButton = null;
+
         public void Play()
         {
-            StartCoroutine(SceneLoaderManager.Instance.ChangeLevel(Constants.SCENE_INDEX_GAME));
+            SceneLoaderManager.Instance.StartChangeLevel(Constants.SCENE_INDEX_GAME);
+        }
+
+        public void Intertitial()
+        {
+            AdManager.Instance.Intertitial();
         }
     }
 }

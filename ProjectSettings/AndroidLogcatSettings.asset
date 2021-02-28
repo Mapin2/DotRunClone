@@ -2,70 +2,64 @@
     "m_SelectedDeviceId": "94HAY0P9KW",
     "m_SelectedPackage": {
         "deviceId": "94HAY0P9KW",
-        "name": "com.mariopinto.TerceraEntregaDotRun",
-        "processId": 18029,
+        "name": "com.mariopinto.DotRunMG",
+        "processId": 22957,
         "exited": true
     },
     "m_SelectedPriority": 0,
     "m_KnownPackagesForSerialization": [
         {
             "deviceId": "94HAY0P9KW",
-            "name": "com.mariopinto.TerceraEntregaDotRun",
-            "processId": 4580,
+            "name": "com.unity3d.mobileremote",
+            "processId": 24561,
             "exited": true
         },
         {
             "deviceId": "94HAY0P9KW",
             "name": "com.mariopinto.TerceraEntregaDotRun",
-            "processId": 5817,
+            "processId": 24798,
+            "exited": true
+        },
+        {
+            "deviceId": "94HAY0P9KW",
+            "name": "com.mariopinto.TerceraEntregaDotRun",
+            "processId": 28462,
+            "exited": true
+        },
+        {
+            "deviceId": "94HAY0P9KW",
+            "name": "com.mariopinto.TerceraEntregaDotRun",
+            "processId": 30290,
+            "exited": true
+        },
+        {
+            "deviceId": "94HAY0P9KW",
+            "name": "com.mariopinto.DotRunMG",
+            "processId": 20577,
             "exited": true
         },
         {
             "deviceId": "94HAY0P9KW",
             "name": "com.unity3d.mobileremote",
-            "processId": 7384,
+            "processId": 12355,
+            "exited": false
+        },
+        {
+            "deviceId": "94HAY0P9KW",
+            "name": "com.google.android.apps.nexuslauncher",
+            "processId": 5810,
             "exited": false
         },
         {
             "deviceId": "94HAY0P9KW",
             "name": "com.mariopinto.TerceraEntregaDotRun",
-            "processId": 9851,
-            "exited": true
-        },
-        {
-            "deviceId": "94HAY0P9KW",
-            "name": "com.mariopinto.TerceraEntregaDotRun",
-            "processId": 15221,
-            "exited": true
-        },
-        {
-            "deviceId": "94HAY0P9KW",
-            "name": "com.mariopinto.TerceraEntregaDotRun",
-            "processId": 18387,
-            "exited": true
-        },
-        {
-            "deviceId": "94HAY0P9KW",
-            "name": "com.mariopinto.TerceraEntregaDotRun",
-            "processId": 20440,
+            "processId": 21568,
             "exited": false
         },
         {
             "deviceId": "94HAY0P9KW",
-            "name": "com.mariopinto.TerceraEntregaDotRun",
-            "processId": 23708,
-            "exited": true
-        },
-        {
-            "deviceId": "94HAY0P9KW",
-            "name": "com.mariopinto.TerceraEntregaDotRun",
-            "processId": 14903,
-            "exited": false
-        },
-        {
-            "deviceId": "94HAY0P9KW",
-            "name": "com.mariopinto.TerceraEntregaDotRun",
-            "processId": 18029,
+            "name": "com.mariopinto.DotRunMG",
+            "processId": 22957,
             "exited": true
         }
     ],

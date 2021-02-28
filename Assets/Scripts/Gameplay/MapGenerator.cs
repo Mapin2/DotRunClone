@@ -7,6 +7,7 @@ namespace DotRun.GamePlay
 {
     public class MapGenerator : MonoBehaviour
     {
+        // Configuration
         [SerializeField] private Material[] dotMaterials = null;
         [SerializeField] private float[] possibleXPositions = new float[] { -1.5f, 0, 1.5f };
         [SerializeField] private GameObject dotPrefab = null;
@@ -68,7 +69,7 @@ namespace DotRun.GamePlay
                 float currentMaterialDotX = possibleXPositions[UnityEngine.Random.Range(0, possibleXPositions.Length)];
                 for (float xPos = minXDotPosition; xPos <= maxXDotPosition; xPos += displacement)
                 {
-                    bool isCurrent = xPos == currentMaterialDotX ? true : false;
+                    bool isCurrent = xPos == currentMaterialDotX;
                     Material material = isCurrent ? currentMaterial : GetRandomMaterial();
                     GameObject instantiatedDot = InstantiateDot(new Vector2(xPos, yPos), material, changeCurrentMaterial);
                     if (isCurrent && PowerUpManager.Instance.canSpawnPowerUp && !PowerUpManager.Instance.powerUpSpawned)

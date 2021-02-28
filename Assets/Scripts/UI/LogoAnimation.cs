@@ -9,9 +9,9 @@ namespace DotRun.UI
 {
     public class LogoAnimation : MonoBehaviour
     {
-        [SerializeField] Image logo = null;
-        [SerializeField] Vector3 endPoint;
-        [SerializeField] float duration = 3f;
+        [SerializeField] private Image logo = null;
+        [SerializeField] private Vector3 endPoint = new Vector3();
+        [SerializeField] private float duration = 3f;
 
         IEnumerator Start()
         {

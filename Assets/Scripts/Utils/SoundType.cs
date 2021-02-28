@@ -4,7 +4,7 @@
     {
         Normal,
         Hurt,
-        Heal,
+        PowerUp,
         ChangeColor
     }
 }

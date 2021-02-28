@@ -27,14 +27,19 @@ namespace DotRun.Core
 
         public void Heal()
         {
+            // For healing the right heart
+            Heart heartToHeal = null;
             foreach (Heart heart in lifes)
             {
                 if (!heart.animatedIconHandler.isClicked)
                 {
-                    heart.animatedIconHandler.ClickEvent();
-                    break;
+                    heartToHeal = heart;
                 }
             }
+
+            if (heartToHeal)
+                heartToHeal.animatedIconHandler.ClickEvent();
+
             CheckHasAllLifes();
         }
 

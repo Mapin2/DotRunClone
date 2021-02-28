@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
-using DG.Tweening;
+﻿using UnityEngine;
 using DotRun.Utils;
 using DotRun.GamePlay;
 
@@ -9,15 +7,13 @@ namespace DotRun.Core
     public class PowerUpManager : Singleton<PowerUpManager>
     {
         public GameObject powerUpIndicator = null;
-        [SerializeField] private float powerUpIndicatorActivePos = 421;
-        [SerializeField] private float powerUpIndicatorUnactivePos = 460;
-        private float animDuration = 0.5f;
         public GameObject[] powerUpIndicatorTypes = null;
 
-        [SerializeField] private float minSecsToSpawnPowerUp = 5;
-        [SerializeField] private float maxSecsToSpawnPowerUp = 10;
+        private float minSecsToSpawnPowerUp = 5;
+        private float maxSecsToSpawnPowerUp = 10;
         private float timer = 0;
         private float nextPowerUp = 0;
+        private float powerUpDuration = 0;
 
         public bool canSpawnPowerUp = false;
         public bool powerUpSpawned = false;
@@ -30,14 +26,35 @@ namespace DotRun.Core
 
         private void Update()
         {
-            if (!canSpawnPowerUp && !powerUpSpawned && !hasPowerUp)
+
+            if (GameManager.Instance.gameIsRunning && !canSpawnPowerUp && !powerUpSpawned && !hasPowerUp)
             {
-                timer += Time.deltaTime;
-                if (timer >= nextPowerUp)
-                {
-                    canSpawnPowerUp = true;
-                    ReloadTimer();
-                }
+                SpawnPowerUpTimer();
+            }
+
+            if (GameManager.Instance.gameIsRunning && powerUpDuration > 0)
+            {
+                PowerUpTimer();
+            }
+        }
+
+        private void SpawnPowerUpTimer()
+        {
+            timer += Time.deltaTime;
+            if (timer >= nextPowerUp)
+            {
+                canSpawnPowerUp = true;
+                ReloadTimer();
+            }
+        }
+        private void PowerUpTimer()
+        {
+            powerUpDuration -= Time.deltaTime;
+            if (powerUpDuration <= 0)
+            {
+                powerUpDuration = 0;
+                ScoreManager.Instance.scoreMultiplier = 1;
+                DeactivateIndicator();
             }
         }
 
@@ -52,6 +69,7 @@ namespace DotRun.Core
             // Change interactable type
             Dot dot = dotObject.GetComponentInChildren<Dot>();
             dot.type = InteractableType.PowerUp;
+            
             // Pick a random power up from the list and activate it
             PowerUp[] powerUps = dot.powerUps;
             PowerUp powerUp = powerUps[Random.Range(0, powerUps.Length)];
@@ -65,9 +83,9 @@ namespace DotRun.Core
         {
             powerUpSpawned = false;
             hasPowerUp = true;
-            // TODO encontrar una manera de que no se rompa la posicion por culpa de que es un objeto del canvas
-            // powerUpIndicator.transform.DOLocalMoveY(powerUpIndicatorActivePos, animDuration).SetEase(Ease.OutQuint);
+            powerUpIndicator.SetActive(true);
 
+            // Find the correct indicator icon to show the current powerUP
             foreach (GameObject powerUpIndicatorType in powerUpIndicatorTypes)
             {
                 if (type == PowerUpType.MultiplyX2 && powerUpIndicatorType.name.Equals(Constants.OBJECT_NAME_X2))
@@ -81,23 +99,16 @@ namespace DotRun.Core
         public void DeactivateIndicator()
         {
             hasPowerUp = false;
-            // TODO encontrar una manera de que no se rompa la posicion por culpa de que es un objeto del canvas
-            // powerUpIndicator.transform.DOLocalMoveY(powerUpIndicatorUnactivePos, animDuration).SetEase(Ease.InQuint);
+            powerUpIndicator.SetActive(false);
 
             foreach (GameObject powerUpIndicatorType in powerUpIndicatorTypes)
                 powerUpIndicatorType.SetActive(false);
         }
 
-        internal void StartMultiply(float duration)
+        public void StartMultiply(float duration)
         {
-            StartCoroutine(Multiplier(duration));
-        }
-
-        public IEnumerator Multiplier(float duration)
-        {
-            yield return new WaitForSeconds(duration);
-            ScoreManager.Instance.scoreMultiplier = 1;
-            DeactivateIndicator();
+            // PowerUp timer
+            powerUpDuration = duration;
         }
     }
 }

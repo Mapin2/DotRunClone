@@ -26,9 +26,11 @@ namespace DotRun.GamePlay
 
         private void Start()
         {
+            // Try get component to which this script is attached
             TryGetComponent(out spriteRenderer);
             TryGetComponent(out image);
             TryGetComponent(out text);
+
             ApplyCurrentMaterial();
         }
 

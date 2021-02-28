@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using DotRun.Utils;
 using DotRun.GamePlay;
+using DotRun.Menu;
 using TMPro;
 
 namespace DotRun.Core
@@ -12,10 +13,11 @@ namespace DotRun.Core
         private Material lastCurrentMaterial = null;
         public int maxScore = 0;
         public bool gameIsRunning = false;
+        public bool gameStarted = false;
 
         [SerializeField] private TextMeshProUGUI maxScoreUI = null;
+        [SerializeField] private GameOverMenu gameOverUI = null;
 
-        // Managers
         [SerializeField] private MapGenerator mapGenerator = null;
 
         public override void Awake()
@@ -50,6 +52,9 @@ namespace DotRun.Core
                 if (!mapGenerator)
                     mapGenerator = FindObjectOfType<MapGenerator>();
 
+                if (!gameOverUI)
+                    gameOverUI = FindObjectOfType<GameOverMenu>();
+
                 mapGenerator.GenerateMap();
             }
         }
@@ -57,6 +62,7 @@ namespace DotRun.Core
         public void StartGame()
         {
             gameIsRunning = true;
+            gameStarted = true;
         }
 
         public void Hurt()
@@ -79,15 +85,7 @@ namespace DotRun.Core
         private void GameOver()
         {
             gameIsRunning = false;
-            currentMaterial = Dot.latestTouchedDotMaterial;
-            PlayerPrefs.SetString(Constants.PLAYERPREF_CURRENT_MATERIAL, currentMaterial.name);
-            if (ScoreManager.Instance.score > maxScore)
-            {
-                maxScore = ScoreManager.Instance.score;
-                PlayerPrefs.SetInt(Constants.PLAYERPREF_MAX_CURRENT_SCORE, maxScore);
-            }
-
-            StartCoroutine(SceneLoaderManager.Instance.ChangeLevel(Constants.SCENE_INDEX_MAIN_MENU));
+            gameOverUI.ActivateMenu();
         }
 
         private void OnDisable()

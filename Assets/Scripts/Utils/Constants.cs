@@ -7,6 +7,7 @@ namespace DotRun.Utils
         // Playerprefs
         public const string PLAYERPREF_CURRENT_MATERIAL = "CurrentMaterial";
         public const string PLAYERPREF_MAX_CURRENT_SCORE = "CurrentScore";
+        public const string PLAYERPREF_AUDIO_MUTED = "Muted";
 
         // Scene index
         public const int SCENE_INDEX_LOGO = 0;
@@ -33,6 +34,13 @@ namespace DotRun.Utils
 
         // Paths
         public const string RESOURCES_MATERIALS_FOLDER = "Materials/";
+
+        // Ads ids
+        public const string GOOGLE_ADS_TEST_APP_ID = "ca-app-pub-3940256099942544~3347511713";
+        public const string GOOGLE_ADS_TEST_BANNER_ID = "ca-app-pub-3940256099942544/6300978111";
+        public const string GOOGLE_ADS_TEST_REWARDED_ID = "ca-app-pub-3940256099942544/6300978117";
+        public const string GOOGLE_ADS_TEST_INTERSTITIAL_ID = "ca-app-pub-3940256099942544/6300978112";
+        
 
         // Others
         public const string DEFAULT_CURRENT_MATERIAL = "Red";

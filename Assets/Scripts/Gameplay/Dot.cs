@@ -33,13 +33,6 @@ namespace DotRun.GamePlay
         private float unitsToMove = 1.5f; // Number of units the dot will move down
         private float yPosLimit = -7f; // Y position in which the dot will destroy itself
 
-        [Header("Sounds")]
-        [SerializeField] private AudioSource source = null;
-        [SerializeField] private AudioClip normalSound = null;
-        [SerializeField] private AudioClip changeColorSound = null;
-        [SerializeField] private AudioClip wrongColorSound = null;
-        [SerializeField] private AudioClip powerUpSound = null;
-
         [Header("PowerUps")]
         public PowerUp[] powerUps = null;
         
@@ -92,26 +85,6 @@ namespace DotRun.GamePlay
                     PowerUpManager.Instance.powerUpSpawned = false;
                 Destroy(gameObject);
             }
-        }
-
-        public void PlaySound(SoundType type)
-        {
-            switch (type)
-            {
-                case SoundType.Normal:
-                    source.clip = normalSound;
-                    break;
-                case SoundType.ChangeColor:
-                    source.clip = changeColorSound;
-                    break;
-                case SoundType.Hurt:
-                    source.clip = wrongColorSound;
-                    break;
-                case SoundType.Heal:
-                    source.clip = powerUpSound;
-                    break;
-            }
-            source.Play();
         }
 
         public void DotMove()
