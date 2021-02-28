@@ -3,9 +3,7 @@ Game clone for practice purposes, I'm making it only seeing the demo.
 
 The original game: https://dotrun.voxelstudios.it/
 
-How the clone is going: 
-
-![Alt Text](https://media.giphy.com/media/y6epShVMPVeg71hRko/giphy.gif)
+I will put here the link to Itch.IO to download de apk and the link to the playstore if I end up uploading it now that the project is ended.
 
 ### If you want to download this project and make it work you'll need the next paid assets I didn't include on the sources:
 
