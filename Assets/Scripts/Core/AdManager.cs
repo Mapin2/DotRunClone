@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using DotRun.Utils;
@@ -9,21 +10,21 @@ namespace DotRun.Core
 {
     public class AdManager : Singleton<AdManager>
     {
+        private MainMenu mainMenu = null;
         private GameOverMenu gameOverMenu = null;
 
         [HideInInspector] public BannerView bannerAd = null;
+        private bool bannerLoaded = false;
         [HideInInspector] public RewardedAd rewardedAd = null;
         private bool rewardLoaded = false;
         [HideInInspector] public InterstitialAd interstitialAd = null;
         private bool intertitialLoaded = false;
 
-        private MainMenu mainMenu = null;
-
         public override void Awake()
         {
             base.Awake();
 
-            MobileAds.Initialize((initStatus) =>
+            MobileAds.Initialize(initStatus =>
             {
                 // SDK initialization is complete
             });
@@ -36,34 +37,51 @@ namespace DotRun.Core
 
         void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            if (scene.buildIndex == Constants.SCENE_INDEX_MAIN_MENU)
+            switch (scene.buildIndex)
             {
-                if (!mainMenu)
-                    mainMenu = FindObjectOfType<MainMenu>();  
-                
-                RequestBanner();
-                RequestIntertitial();
-            }
+                case Constants.SCENE_INDEX_MAIN_MENU:
+                    if (!mainMenu)
+                        mainMenu = FindObjectOfType<MainMenu>();
 
-            if (scene.buildIndex == Constants.SCENE_INDEX_GAME)
-            {
-                if (!gameOverMenu)
-                    gameOverMenu = FindObjectOfType<GameOverMenu>();
+                    RequestBanner();
+                    RequestIntertitial();
+                    break;
+                case Constants.SCENE_INDEX_GAME:
+                    if (!gameOverMenu)
+                        gameOverMenu = FindObjectOfType<GameOverMenu>();
 
-                RequestRewarded();
-
-                bannerAd.Hide();
+                    RequestRewarded();
+                    bannerAd.Hide();
+                    break;
             }
         }
 
+        #region Banner, Intertitial and Reward load and events
+        // Banner
         private void RequestBanner()
         {
-            bannerAd = new BannerView(Constants.GOOGLE_ADS_TEST_BANNER_ID, AdSize.Banner, AdPosition.Top);
+            if (!bannerLoaded)
+            {
+                bannerAd = new BannerView(Constants.GOOGLE_ADS_TEST_BANNER_ID, AdSize.Banner, AdPosition.Top);
+                // Events
+                bannerAd.OnAdLoaded += HandleOnBannerLoaded;
+                bannerAd.OnAdFailedToLoad += HandleOnBannerFailedToLoad;
+            }
+
             AdRequest request = AdRequestBuild();
             bannerAd.LoadAd(request);
         }
 
-        #region Intertitial and Reward
+        public void HandleOnBannerLoaded(object sender, EventArgs args)
+        {
+            bannerLoaded = true;
+        }
+
+        public void HandleOnBannerFailedToLoad(object sender, AdFailedToLoadEventArgs args)
+        {
+            Debug.LogError("HandleOnBannerFailedToLoad event received with message: " + args.Message);
+        }
+
         // Reward
         private void RequestRewarded()
         {
@@ -72,6 +90,7 @@ namespace DotRun.Core
                 rewardedAd = new RewardedAd(Constants.GOOGLE_ADS_TEST_REWARDED_ID);
                 // Events
                 rewardedAd.OnAdLoaded += HandleOnRewardLoaded;
+                rewardedAd.OnAdFailedToLoad += HandleOnRewardFailedToLoad;
                 rewardedAd.OnAdOpening += HandleOnRewardOpening;
                 rewardedAd.OnUserEarnedReward += HandleOnUserEarnedReward;
                 rewardedAd.OnAdClosed += HandleOnRewardClosed;
@@ -93,6 +112,11 @@ namespace DotRun.Core
             gameOverMenu.rewardButton.interactable = true;
         }
 
+        public void HandleOnRewardFailedToLoad(object sender, AdErrorEventArgs args)
+        {
+            Debug.LogError("HandleOnRewardFailedToLoad event received with message: " + args.Message);
+        }
+
         public void HandleOnRewardOpening(object sender, EventArgs args)
         {
             gameOverMenu.rewardButton.interactable = false;
@@ -100,7 +124,6 @@ namespace DotRun.Core
 
         public void HandleOnUserEarnedReward(object sender, Reward args)
         {
-            Debug.Log("Rewarded");
             bannerAd.Hide();
             HeartManager.Instance.Heal();
             gameOverMenu.DeactivateMenu();
@@ -123,6 +146,7 @@ namespace DotRun.Core
             {
                 interstitialAd = new InterstitialAd(Constants.GOOGLE_ADS_TEST_INTERSTITIAL_ID);
                 interstitialAd.OnAdLoaded += HandleOnIntertitialLoaded;
+                interstitialAd.OnAdFailedToLoad += HandleOnIntertitialFailedToLoad;
                 interstitialAd.OnAdOpening += HandleOnIntertitialOpening;
                 interstitialAd.OnAdClosed += HandleOnIntertitialClosed;
                 intertitialLoaded = true;
@@ -142,6 +166,11 @@ namespace DotRun.Core
         public void HandleOnIntertitialLoaded(object sender, EventArgs args)
         {
             mainMenu.intertitialButton.interactable = true;
+        }
+
+        public void HandleOnIntertitialFailedToLoad(object sender, AdFailedToLoadEventArgs args)
+        {
+            Debug.LogError("HandleOnIntertitialFailedToLoad event received with message: " + args.Message);
         }
 
         public void HandleOnIntertitialOpening(object sender, EventArgs args)

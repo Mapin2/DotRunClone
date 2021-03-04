@@ -40,7 +40,6 @@ namespace DotRun.Utils
         public const string GOOGLE_ADS_TEST_BANNER_ID = "ca-app-pub-3940256099942544/6300978111";
         public const string GOOGLE_ADS_TEST_REWARDED_ID = "ca-app-pub-3940256099942544/6300978117";
         public const string GOOGLE_ADS_TEST_INTERSTITIAL_ID = "ca-app-pub-3940256099942544/6300978112";
-        
 
         // Others
         public const string DEFAULT_CURRENT_MATERIAL = "Red";
