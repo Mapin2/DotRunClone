@@ -85,5 +85,11 @@ namespace DotRun.Core
                 yield return new WaitForSeconds(0.05f);
             }
         }
+
+        public void ReloadTimerAndUI()
+        {
+            timer = 0;
+            timerUI.ResetImageFill();
+        }
     }
 }

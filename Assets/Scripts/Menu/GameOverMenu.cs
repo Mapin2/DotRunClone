@@ -24,7 +24,7 @@ namespace DotRun.Menu
 
         public void Exit()
         {
-            // This is executed when the plater decides to end the match (and not run a reward add to keep playing)
+            // This is executed when the player decides to end the match (and not run a reward add to keep playing)
             int maxScore = GameManager.Instance.maxScore;
             Material currentMaterial = Dot.latestTouchedDotMaterial;
             PlayerPrefs.SetString(Constants.PLAYERPREF_CURRENT_MATERIAL, currentMaterial.name);
@@ -34,7 +34,7 @@ namespace DotRun.Menu
                 PlayerPrefs.SetInt(Constants.PLAYERPREF_MAX_CURRENT_SCORE, maxScore);
             }
 
-            SceneLoaderManager.Instance.StartChangeLevelFrame(Constants.SCENE_INDEX_MAIN_MENU);
+            SceneLoaderManager.Instance.StartChangeLevelAd(Constants.SCENE_INDEX_MAIN_MENU);
         }
 
         public void RunReward()

@@ -109,7 +109,8 @@ namespace DotRun.Core
 
         public void HandleOnRewardLoaded(object sender, EventArgs args)
         {
-            gameOverMenu.rewardButton.interactable = true;
+            if (gameOverMenu)
+                gameOverMenu.rewardButton.interactable = true;
         }
 
         public void HandleOnRewardFailedToLoad(object sender, AdErrorEventArgs args)
@@ -119,18 +120,18 @@ namespace DotRun.Core
 
         public void HandleOnRewardOpening(object sender, EventArgs args)
         {
-            gameOverMenu.rewardButton.interactable = false;
+            if (gameObject)
+                gameOverMenu.rewardButton.interactable = false;
         }
 
         public void HandleOnUserEarnedReward(object sender, Reward args)
         {
             bannerAd.Hide();
             HeartManager.Instance.Heal();
+            ScoreManager.Instance.ReloadTimerAndUI();
             gameOverMenu.DeactivateMenu();
             if (GameManager.Instance.gameStarted)
-            {
                 GameManager.Instance.gameIsRunning = true;
-            }
         }
 
         public void HandleOnRewardClosed(object sender, EventArgs args)
@@ -165,7 +166,8 @@ namespace DotRun.Core
 
         public void HandleOnIntertitialLoaded(object sender, EventArgs args)
         {
-            mainMenu.intertitialButton.interactable = true;
+            if (mainMenu)
+                mainMenu.intertitialButton.interactable = true;
         }
 
         public void HandleOnIntertitialFailedToLoad(object sender, AdFailedToLoadEventArgs args)
@@ -175,7 +177,8 @@ namespace DotRun.Core
 
         public void HandleOnIntertitialOpening(object sender, EventArgs args)
         {
-            mainMenu.intertitialButton.interactable = false;
+            if (mainMenu)
+                mainMenu.intertitialButton.interactable = false;
         }
 
         public void HandleOnIntertitialClosed(object sender, EventArgs args)

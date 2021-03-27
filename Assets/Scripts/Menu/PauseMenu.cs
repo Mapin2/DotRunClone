@@ -26,7 +26,7 @@ namespace DotRun.UI
 
         public void Exit()
         {
-            SceneLoaderManager.Instance.ChangeLevelNoDelay(Constants.SCENE_INDEX_MAIN_MENU);
+            SceneLoaderManager.Instance.StartChangeLevelAd(Constants.SCENE_INDEX_MAIN_MENU);
         }
     }
 }

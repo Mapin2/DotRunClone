@@ -12,12 +12,20 @@ namespace DotRun.Core
         private int levelToLoad = 0;
 
         private float waitSeconds = 0.3f;
+        private float waitSecondsAd = 0.005f;
 
         public void StartChangeLevel(int sceneId) {
             // Level change with coroutine duration waitSeconds
             StartCoroutine(ChangeLevel(sceneId));
         }
-        
+
+        public void StartChangeLevelAd(int sceneId)
+        {
+            // Level change with coroutine duration waitSeconds and intertititalAd
+            AdManager.Instance.Intertitial();
+            StartCoroutine(ChangeLevelAd(sceneId));
+        }
+
         public void StartChangeLevelFrame(int sceneId) {
             // Level change with coroutine duration 1 frame
             StartCoroutine(ChangeLevelOneFrame(sceneId));
@@ -30,14 +38,21 @@ namespace DotRun.Core
             OnFadeComplete();
         }
 
-        public IEnumerator ChangeLevel(int sceneId)
+        private IEnumerator ChangeLevel(int sceneId)
         {
             levelToLoad = sceneId;
             yield return new WaitForSeconds(waitSeconds);
             OnFadeComplete();
         }
 
-        IEnumerator ChangeLevelOneFrame(int sceneId)
+        private IEnumerator ChangeLevelAd(int sceneId)
+        {
+            levelToLoad = sceneId;
+            yield return new WaitForSeconds(waitSecondsAd);
+            OnFadeComplete();
+        }
+
+        private IEnumerator ChangeLevelOneFrame(int sceneId)
         {
             levelToLoad = sceneId;
             yield return null;
