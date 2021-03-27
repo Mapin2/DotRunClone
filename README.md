@@ -3,7 +3,9 @@ Game clone for practice purposes, I'm making it only seeing the demo.
 
 The original game: https://dotrun.voxelstudios.it/
 
-I will put here the link to Itch.IO to download de apk and the link to the playstore if I end up uploading it now that the project is ended.
+Links
+Itch.IO: https://mariozombiekill.itch.io/runner-dots
+Play Store: https://play.google.com/store/apps/details?id=com.mariopinto.DotRun
 
 ### If you want to download this project and make it work you'll need the next paid assets I didn't include on the sources:
 
