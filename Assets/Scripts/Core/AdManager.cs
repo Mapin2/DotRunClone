@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using DotRun.Utils;
@@ -16,9 +15,7 @@ namespace DotRun.Core
         [HideInInspector] public BannerView bannerAd = null;
         private bool bannerLoaded = false;
         [HideInInspector] public RewardedAd rewardedAd = null;
-        private bool rewardLoaded = false;
         [HideInInspector] public InterstitialAd interstitialAd = null;
-        private bool intertitialLoaded = false;
 
         public override void Awake()
         {
@@ -35,7 +32,7 @@ namespace DotRun.Core
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
-        void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             switch (scene.buildIndex)
             {
@@ -44,7 +41,7 @@ namespace DotRun.Core
                         mainMenu = FindObjectOfType<MainMenu>();
 
                     RequestBanner();
-                    RequestIntertitial();
+                    RequestInterstitial();
                     break;
                 case Constants.SCENE_INDEX_GAME:
                     if (!gameOverMenu)
@@ -57,74 +54,106 @@ namespace DotRun.Core
         }
 
         #region Banner, Intertitial and Reward load and events
+
         // Banner
         private void RequestBanner()
         {
+            if (bannerAd != null)
+            {
+                bannerAd.Destroy();
+                bannerAd = null;
+                bannerLoaded = false;
+            }
+            
             if (!bannerLoaded)
             {
                 bannerAd = new BannerView(Constants.GOOGLE_ADS_TEST_BANNER_ID, AdSize.Banner, AdPosition.Top);
                 // Events
-                bannerAd.OnAdLoaded += HandleOnBannerLoaded;
-                bannerAd.OnAdFailedToLoad += HandleOnBannerFailedToLoad;
+                bannerAd.OnBannerAdLoaded += HandleOnBannerLoaded;
+                bannerAd.OnBannerAdLoadFailed += HandleOnBannerFailedToLoad;
             }
 
-            AdRequest request = AdRequestBuild();
-            bannerAd.LoadAd(request);
+            AdRequest adRequest = AdRequestBuild();
+            bannerAd?.LoadAd(adRequest);
         }
 
-        public void HandleOnBannerLoaded(object sender, EventArgs args)
+        private void HandleOnBannerLoaded()
         {
             bannerLoaded = true;
         }
 
-        public void HandleOnBannerFailedToLoad(object sender, AdFailedToLoadEventArgs args)
+        private void HandleOnBannerFailedToLoad(LoadAdError error)
         {
-            Debug.LogError("HandleOnBannerFailedToLoad event received with message: " + args.Message);
+            Debug.LogError($"HandleOnBannerFailedToLoad event received with message: {error}");
         }
 
         // Reward
         private void RequestRewarded()
         {
-            if (!rewardLoaded)
+            if (rewardedAd != null)
             {
-                rewardedAd = new RewardedAd(Constants.GOOGLE_ADS_TEST_REWARDED_ID);
-                // Events
-                rewardedAd.OnAdLoaded += HandleOnRewardLoaded;
-                rewardedAd.OnAdFailedToLoad += HandleOnRewardFailedToLoad;
-                rewardedAd.OnAdOpening += HandleOnRewardOpening;
-                rewardedAd.OnUserEarnedReward += HandleOnUserEarnedReward;
-                rewardedAd.OnAdClosed += HandleOnRewardClosed;
-                rewardLoaded = true;
+                rewardedAd.Destroy();
+                rewardedAd.OnAdFullScreenContentOpened -= HandleOnRewardOpening;
+                rewardedAd.OnAdFullScreenContentClosed -= HandleOnRewardClosed;
+                rewardedAd = null;
             }
 
-            AdRequest request = AdRequestBuild();
-            rewardedAd.LoadAd(request);
+            AdRequest adRequest = new AdRequest();
+
+            RewardedAd.Load(Constants.GOOGLE_ADS_TEST_REWARDED_ID, adRequest,
+                (RewardedAd ad, LoadAdError error) =>
+                {
+                    // if error is not null, the load request failed.
+                    if (error != null || ad == null)
+                    {
+                        Debug.LogError("Rewarded ad failed to load an ad " +
+                                       "with error : " + error);
+                        return;
+                    }
+
+                    Debug.Log("Rewarded ad loaded with response : "
+                              + ad.GetResponseInfo());
+
+                    rewardedAd = ad;
+                    HandleOnRewardLoaded();
+                });
         }
 
         public void Reward()
         {
-            if (rewardedAd.IsLoaded())
-                rewardedAd.Show();
+            ShowRewardedAd();
         }
 
-        public void HandleOnRewardLoaded(object sender, EventArgs args)
+        private void ShowRewardedAd()
         {
+            const string rewardMsg =
+                "Rewarded ad rewarded the user. Type: {Heart}, amount: {1}.";
+
+            if (rewardedAd != null && rewardedAd.CanShowAd())
+            {
+                rewardedAd.Show((Reward reward) =>
+                {
+                    HandleOnUserEarnedReward();
+                    Debug.Log(String.Format(rewardMsg, reward.Type, reward.Amount));
+                });
+            }
+        }
+
+        private void HandleOnRewardLoaded()
+        {
+            rewardedAd.OnAdFullScreenContentOpened += HandleOnRewardOpening;
+            rewardedAd.OnAdFullScreenContentClosed += HandleOnRewardClosed;
             if (gameOverMenu)
                 gameOverMenu.rewardButton.interactable = true;
         }
 
-        public void HandleOnRewardFailedToLoad(object sender, AdErrorEventArgs args)
+        private void HandleOnRewardOpening()
         {
-            Debug.LogError("HandleOnRewardFailedToLoad event received with message: " + args.Message);
-        }
-
-        public void HandleOnRewardOpening(object sender, EventArgs args)
-        {
-            if (gameObject)
+            if (gameOverMenu)
                 gameOverMenu.rewardButton.interactable = false;
         }
 
-        public void HandleOnUserEarnedReward(object sender, Reward args)
+        private void HandleOnUserEarnedReward()
         {
             bannerAd.Hide();
             HeartManager.Instance.Heal();
@@ -134,67 +163,99 @@ namespace DotRun.Core
                 GameManager.Instance.gameIsRunning = true;
         }
 
-        public void HandleOnRewardClosed(object sender, EventArgs args)
+        private void HandleOnRewardClosed()
         {
             RequestRewarded();
         }
 
-        // Intertitial
-        private void RequestIntertitial()
+        // Interstitial
+        private void RequestInterstitial()
         {
-            // Events
-            if (!intertitialLoaded)
+            if (interstitialAd != null)
             {
-                interstitialAd = new InterstitialAd(Constants.GOOGLE_ADS_TEST_INTERSTITIAL_ID);
-                interstitialAd.OnAdLoaded += HandleOnIntertitialLoaded;
-                interstitialAd.OnAdFailedToLoad += HandleOnIntertitialFailedToLoad;
-                interstitialAd.OnAdOpening += HandleOnIntertitialOpening;
-                interstitialAd.OnAdClosed += HandleOnIntertitialClosed;
-                intertitialLoaded = true;
+                interstitialAd.Destroy();
+                interstitialAd.OnAdFullScreenContentOpened  -= HandleOnInterstitialOpening;
+                interstitialAd.OnAdFullScreenContentClosed  -= HandleOnInterstitialClosed;
+                interstitialAd = null;
             }
+            
+            AdRequest adRequest = AdRequestBuild();
+            
+            InterstitialAd.Load(Constants.GOOGLE_ADS_TEST_INTERSTITIAL_ID, adRequest,
+                (InterstitialAd ad, LoadAdError error) =>
+                {
+                    // if error is not null, the load request failed.
+                    if (error != null || ad == null)
+                    {
+                        Debug.LogError("Interstitial ad failed to load an ad " +
+                                       "with error : " + error);
+                        return;
+                    }
 
-            AdRequest request = AdRequestBuild();
-            interstitialAd.LoadAd(request);
+                    Debug.Log("Interstitial ad loaded with response : "
+                              + ad.GetResponseInfo());
 
+                    interstitialAd = ad;
+                    HandleOnInterstitialLoaded();
+                });
         }
 
-        public void Intertitial()
+        public void Interstitial()
         {
-            if (interstitialAd.IsLoaded())
+            ShowInterstitialAd();
+        }
+        
+        private void ShowInterstitialAd()
+        {
+            if (interstitialAd != null && interstitialAd.CanShowAd())
+            {
+                Debug.Log("Showing interstitial ad.");
                 interstitialAd.Show();
+            }
+            else
+            {
+                Debug.LogError("Interstitial ad is not ready yet.");
+            }
         }
 
-        public void HandleOnIntertitialLoaded(object sender, EventArgs args)
+        private void HandleOnInterstitialLoaded()
         {
+            interstitialAd.OnAdFullScreenContentOpened  += HandleOnInterstitialOpening;
+            interstitialAd.OnAdFullScreenContentClosed  += HandleOnInterstitialClosed;
             if (mainMenu)
                 mainMenu.intertitialButton.interactable = true;
         }
 
-        public void HandleOnIntertitialFailedToLoad(object sender, AdFailedToLoadEventArgs args)
-        {
-            Debug.LogError("HandleOnIntertitialFailedToLoad event received with message: " + args.Message);
-        }
-
-        public void HandleOnIntertitialOpening(object sender, EventArgs args)
+        private void HandleOnInterstitialOpening()
         {
             if (mainMenu)
                 mainMenu.intertitialButton.interactable = false;
         }
 
-        public void HandleOnIntertitialClosed(object sender, EventArgs args)
+        private void HandleOnInterstitialClosed()
         {
-            RequestIntertitial();
+            RequestInterstitial();
         }
+
         #endregion
 
-        AdRequest AdRequestBuild()
+        private AdRequest AdRequestBuild()
         {
-            return new AdRequest.Builder().Build();
+            return new AdRequest();
         }
 
         private void OnDisable()
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
+
+            bannerAd.OnBannerAdLoaded -= HandleOnBannerLoaded;
+            bannerAd.OnBannerAdLoadFailed -= HandleOnBannerFailedToLoad;
+
+            rewardedAd.OnAdFullScreenContentOpened -= HandleOnRewardOpening;
+            rewardedAd.OnAdFullScreenContentClosed -= HandleOnRewardClosed;
+
+            interstitialAd.OnAdFullScreenContentOpened -= HandleOnInterstitialOpening;
+            interstitialAd.OnAdFullScreenContentClosed -= HandleOnInterstitialClosed;
         }
     }
 }

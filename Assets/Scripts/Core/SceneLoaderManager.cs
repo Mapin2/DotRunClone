@@ -22,7 +22,7 @@ namespace DotRun.Core
         public void StartChangeLevelAd(int sceneId)
         {
             // Level change with coroutine duration waitSeconds and intertititalAd
-            AdManager.Instance.Intertitial();
+            AdManager.Instance.Interstitial();
             StartCoroutine(ChangeLevelAd(sceneId));
         }
 
