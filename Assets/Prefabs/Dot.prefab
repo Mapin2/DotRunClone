@@ -4903,7 +4903,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 10308, guid: 0000000000000000f000000000000000, type: 0}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5164,11 +5163,6 @@ MonoBehaviour:
   line: {fileID: 0}
   linkedWith: {fileID: 0}
   ringVFX: {fileID: 1490480661}
-  source: {fileID: 4345815935944340702}
-  normalSound: {fileID: 8300000, guid: 54f30f6c808b8644fa706724cd97b11c, type: 3}
-  changeColorSound: {fileID: 8300000, guid: 37672e0e656af9d4cb43fe16e1395736, type: 3}
-  wrongColorSound: {fileID: 8300000, guid: c3f5d835fc4d95b43a1a483251275f9e, type: 3}
-  powerUpSound: {fileID: 8300000, guid: c0624920700e50f49904921f11ec8a82, type: 3}
   powerUps:
   - {fileID: 476624930}
   - {fileID: 476624929}

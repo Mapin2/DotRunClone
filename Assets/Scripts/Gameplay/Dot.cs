@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using DotRun.Utils;
 using DotRun.Core;
@@ -7,6 +8,7 @@ namespace DotRun.GamePlay
 {
     public class Dot : MonoBehaviour
     {
+
         // Interaction Settings
         private float minInteractablePos = -1.5f; // The min Y position in which the dot will become interactable
         private float maxInteractablePosition = -2.5f; // The max Y position in which the dot will stop being interactable

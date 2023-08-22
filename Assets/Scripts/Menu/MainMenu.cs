@@ -16,7 +16,7 @@ namespace DotRun.Menu
 
         public void Intertitial()
         {
-            AdManager.Instance.Intertitial();
+            AdManager.Instance.Interstitial();
         }
     }
 }
